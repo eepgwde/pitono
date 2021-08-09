@@ -99,6 +99,13 @@ class _Impl(object):
         self.merge(skewness, name0='skewness')
         self.merge(kurtosis, name0='kurtosis')
         self.merge(uniques, name0='uniques')
+        if not df.columns.empty:
+            self.merge(df.describe().transpose())
+
+        p0 = kwargs.get('predictor', None)
+        if p0 is not None:
+            corr0 = df.corr()[p0]
+            self.merge(corr0, name0='corr')
 
         return self.f0
 

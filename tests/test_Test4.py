@@ -108,6 +108,10 @@ class Test4(unittest.TestCase):
         f2 = DataFrames.instance().quality0(self.f1)
         print(f2)
 
+    def test_13(self):
+        f2 = DataFrames.instance().quality0(self.f1, predictor='Value')
+        print(f2)
+
 
 ## sys.argv
 # The sys.argv line will complain to you if you run it with ipython
