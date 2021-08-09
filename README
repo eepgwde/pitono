@@ -1,0 +1,3 @@
+This package some generic utilities and decorators. It uses functools.
+This has a native implementation and is difficult to install.
+
