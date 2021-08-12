@@ -30,6 +30,9 @@ check::
 
 endif 
 
+install-local:
+	pip install --user .
+
 clean::
 	$(RM) $(wildcard *.pyc *.log *~ nohup.out)
 
