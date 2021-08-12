@@ -112,6 +112,13 @@ class Test4(unittest.TestCase):
         f2 = DataFrames.instance().quality0(self.f1, predictor='Value')
         print(f2)
 
+    def test_15(self):
+        f2 = DataFrames.instance().qfetcher("http://localhost:4444/")
+        print(type(f2))
+        df = f2.fetch( r'select count i from trns')
+        print(type(df))
+        print(df)
+
 
 ## sys.argv
 # The sys.argv line will complain to you if you run it with ipython

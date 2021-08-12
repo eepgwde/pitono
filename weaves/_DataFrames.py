@@ -15,6 +15,8 @@ import os
 import sys
 import platform
 
+from urllib.parse import urljoin, quote
+
 ## Assume that pandas has been loaded.
 import pandas as pd
 
@@ -23,6 +25,19 @@ from functools import singledispatchmethod, update_wrapper
 import configparser 
 
 from cached_property import cached_property
+
+class QFetcher(object):
+    base0 = None
+    url1 = '/a.csv?'
+
+    def __init__(self, base0):
+        self.base0 = base0
+
+    def fetch(self, query0):
+        self.query0 = query0
+        url0 = quote(self.url1 + self.query0)
+        url1 = urljoin(self.base0, url0)
+        return pd.read_csv(url1)
 
 class _Impl(object):
     """Many utility methods and features hidden behind a singleton.
@@ -49,11 +64,22 @@ class _Impl(object):
         l0.addHandler(logging.NullHandler())
         self.logger = kwargs.get('logger', l0)
 
+    def qfetcher(self, base0):
+        return QFetcher(base0)
+
     def log(self, msg):
         self.logger.info("logging: " + msg)
 
     @singledispatchmethod
     def merge(self, arg, name0=None):
+        """
+        A set of methods for appending Pandas objects to a dataframe.
+
+        The dataframe is held in the singleton. To re-initialize it, *arg*
+        should be passed as None.
+
+        After that, a Series or a DataFrame can be appended.
+        """
         if arg is None:
             self.f0 = pd.DataFrame()
             return self.f0
@@ -62,6 +88,10 @@ class _Impl(object):
 
     @merge.register
     def _(self, arg: pd.Series, name0=None):
+        """
+        This method appends a series, the Series needs a name to produce a
+        column for it.
+        """
         if name0 is not None:
             arg.name = name0
         self.logger.info("series")
@@ -70,11 +100,22 @@ class _Impl(object):
 
     @merge.register
     def _(self, arg: pd.DataFrame, name0=None):
+        """
+        This method appends a Dataframe, name0 is not used in this method.
+        """
         self.logger.info("dataframe")
         self.f0 = pd.concat([self.f0, arg], axis=1)
         return self.f0
 
     def quality0(self, df, **kwargs):
+        """
+        Generate a quality report for a dataframe.
+
+        It generates and collates a set of reports.
+
+        The kwargs argument can be used to pass *predictor* the name
+        of a column to which the other columns will report a correlations.
+        """
         obs = df.shape[0]
 
         types = df.dtypes
