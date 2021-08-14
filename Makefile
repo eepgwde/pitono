@@ -62,7 +62,7 @@ uninstall::
 dist-local:
 	$(PYTHON) setup.py sdist
 
-install: 
+install: dist-local
 	$(PIP) install $(wildcard dist/*.tar.gz)
 
 clean::

@@ -150,6 +150,16 @@ class _Impl(object):
 
         return self.f0
 
+    def map0(self, series0, map0=None):
+        '''
+        Remapped a column
+        '''
+        if map0 is None:
+            map0 = series0.unique()
+            map0 = dict(zip(map0, range(len(map0))))
+
+        return series0.map(map0)
+
 class Singleton(object):
     """
     Singleton for L{Impl}, this is known as TimeOps or Utility
