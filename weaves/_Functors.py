@@ -10,6 +10,8 @@
 #
 # The Singleton includes a implementation that does some date arithmetic.
 
+from ._version import __version__, __Id__
+
 import logging
 from datetime import datetime, date, timedelta
 from tempfile import NamedTemporaryFile
@@ -451,6 +453,8 @@ class Singleton(object):
     Singleton for L{Impl}, this is known as TimeOps or Utility
     """
     _impl = None
+
+    __version__ = __version__
     
     @classmethod
     def instance(cls, **kwargs):

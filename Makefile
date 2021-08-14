@@ -42,7 +42,7 @@ distclean::
 
 ## Install
 
-.PHONY: uninstall dist-local docs
+.PHONY: uninstall dist-local docs dist install-local distclean
 
 # --no-private 
 
@@ -59,11 +59,14 @@ uninstall::
 	rm -f $(wildcard dist/*.tar.gz)
 	-$(SHELL) -c "cd $(HOME)/.local; pip3 uninstall --yes $(PKG)"
 
-dist-local:
+dist-local: uninstall
 	$(PYTHON) setup.py sdist
 
 install: dist-local
-	$(PIP) install $(wildcard dist/*.tar.gz)
+	$(PIP) install --user $(wildcard dist/*.tar.gz)
+
+dist:
+	scp $(wildcard dist/*.tar.gz) root@glenda:/var/www/html/weaves-dev.tar.gz
 
 clean::
 	-$(SHELL) -c "find . -type d -name __pycache__ -exec rm -rf {} \;"

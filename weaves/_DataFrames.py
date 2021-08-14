@@ -9,6 +9,8 @@
 #
 # The Singleton does nothing just noww.
 
+from ._version import __version__, __Id__
+
 import logging
 
 import os
@@ -20,7 +22,8 @@ from urllib.parse import urljoin, quote
 ## Assume that pandas has been loaded.
 import pandas as pd
 
-from functools import singledispatchmethod, update_wrapper
+# singledispatchmethod is not available to Python 3.7
+from functools import singledispatch, update_wrapper
 
 import configparser 
 
@@ -64,13 +67,16 @@ class _Impl(object):
         l0.addHandler(logging.NullHandler())
         self.logger = kwargs.get('logger', l0)
 
+        self.merge = singledispatch(self.merge)
+        self.merge.register(pd.Series, self._mergeSeries)
+        self.merge.register(pd.DataFrame, self._mergeDataFrame)
+
     def qfetcher(self, base0):
         return QFetcher(base0)
 
     def log(self, msg):
         self.logger.info("logging: " + msg)
 
-    @singledispatchmethod
     def merge(self, arg, name0=None):
         """
         A set of methods for appending Pandas objects to a dataframe.
@@ -81,13 +87,13 @@ class _Impl(object):
         After that, a Series or a DataFrame can be appended.
         """
         if arg is None:
+            self.logger.info("merge: reset")
             self.f0 = pd.DataFrame()
             return self.f0
 
         raise NotImplementedError("Cannot merge a")
 
-    @merge.register
-    def _(self, arg: pd.Series, name0=None):
+    def _mergeSeries(self, arg, name0=None):
         """
         This method appends a series, the Series needs a name to produce a
         column for it.
@@ -98,8 +104,7 @@ class _Impl(object):
         self.f0 = pd.concat([self.f0, arg], axis=1)
         return self.f0
 
-    @merge.register
-    def _(self, arg: pd.DataFrame, name0=None):
+    def _mergeDataFrame(self, arg, name0=None):
         """
         This method appends a Dataframe, name0 is not used in this method.
         """
@@ -165,6 +170,8 @@ class Singleton(object):
     Singleton for L{Impl}, this is known as TimeOps or Utility
     """
     _impl = None
+
+    __version__ = __version__
     
     @classmethod
     def instance(cls, **kwargs):

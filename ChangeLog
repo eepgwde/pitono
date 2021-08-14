@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+0.1.1
+-----
+
+* singledispatchmethod is Python 3.8
 * added a QFetch for q
 * -
 * -

@@ -3,6 +3,6 @@
 # process, which may cause wedges in the gate later.
 
 # This is problematic to compile, see if a binary distribution is available
-python_version >= '3.8'
+python_version >= '3.7'
 cached_property>=1.0
 unidecode>=0.4

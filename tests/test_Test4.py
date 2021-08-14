@@ -8,7 +8,7 @@
 #
 # Relatively complete test.
 
-from weaves import DataFrames
+from weaves import DataFrames, __version__
 
 import sys
 import logging
@@ -36,7 +36,7 @@ class Test4(unittest.TestCase):
 
     ## Null setup. Create a new one.
     def setUp(self):
-        logger.info('setup')
+        logger.info('setup ' + __version__)
         self.f1 = f1
         return
 
@@ -116,6 +116,13 @@ class Test4(unittest.TestCase):
         f2 = DataFrames.instance().qfetcher("http://localhost:4444/")
         print(type(f2))
         df = f2.fetch( r'select count i from trns')
+        print(type(df))
+        print(df)
+
+    def test_17(self):
+        f2 = DataFrames.instance().qfetcher("http://walti.mooo.com:4444/")
+        print(type(f2))
+        df = f2.fetch( r'select[10] from trns')
         print(type(df))
         print(df)
 
