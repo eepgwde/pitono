@@ -41,6 +41,8 @@ class Test1(unittest.TestCase):
     N = 6
     ss = None
 
+    url1="http://lydia.host0"
+
     ## Null setup. Create a new one.
     def setUp(self):
         logger.info('setup')
@@ -133,15 +135,16 @@ class Test1(unittest.TestCase):
     def test_020(self):
         """
         Initialize the singleton with the proxy and logger.
+        You must set the proxy in the file weaves.cfg
         """
-        url0 = "http://www.bt.com"
+        url0 = self.url1
         v0 = Utility.instance().fetch(url=url0, file='weaves.cfg', logger=logger)
         self.assertIsNotNone(v0)
         Utility.logger().info(Utility.instance().take(20, v0))
         self.assertTrue(Utility.instance().isvalid0(url0, base=True))
 
     def test_022(self):
-        url0 = "http://www.bt.com"
+        url0 = self.url1
         v0 = Utility.instance().fetch(url=url0)
         self.assertIsNotNone(v0)
         logger.info(Utility.instance().take(20, v0))

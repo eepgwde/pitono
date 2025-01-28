@@ -31,7 +31,7 @@ check::
 endif 
 
 install-local:
-	pip install --user .
+	$(PIP) install --break-system-packages --user .
 
 clean::
 	$(RM) $(wildcard *.pyc *.log *~ nohup.out)

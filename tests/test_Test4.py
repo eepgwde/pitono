@@ -19,6 +19,10 @@ import pandas as pd
 
 import unittest
 
+import pdb
+
+# and pdb.set_trace() where the error is.
+
 logging.basicConfig(filename='test.log', level=logging.DEBUG)
 logger = logging.getLogger('Test')
 sh = logging.StreamHandler()
@@ -84,8 +88,8 @@ class Test4(unittest.TestCase):
         nulls = self.f1.apply(lambda x: x.isnull().sum())
         missingP = (self.f1.isnull().sum()/ obs)
 
-        skewness = self.f1.skew()
-        kurtosis = self.f1.kurtosis()
+        skewness = self.f1.skew(skipna=True, numeric_only=True)
+        kurtosis = self.f1.kurtosis(skipna=True, numeric_only=True)
 
         uniques = self.f1.apply(lambda x: [x.unique()])
         uniques = uniques.transpose()
@@ -112,6 +116,7 @@ class Test4(unittest.TestCase):
         f2 = DataFrames.instance().quality0(self.f1, predictor='Value')
         print(f2)
 
+    @unittest.skip("Test needs a q server on localhost")
     def test_15(self):
         f2 = DataFrames.instance().qfetcher("http://localhost:4444/")
         print(type(f2))
@@ -119,6 +124,7 @@ class Test4(unittest.TestCase):
         print(type(df))
         print(df)
 
+    @unittest.skip("Test needs a q server on a remote host")
     def test_17(self):
         f2 = DataFrames.instance().qfetcher("http://walti.mooo.com:4444/")
         print(type(f2))

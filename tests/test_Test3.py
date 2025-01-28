@@ -71,8 +71,11 @@ class Test3(unittest.TestCase):
             asyncio.set_event_loop(loop)
             loop.run_forever()
 
-        t = StoppableThread(target=start_loop, args=(loop,))
-        t.setDaemon(True)
+        t = StoppableThread(target=start_loop, args=(loop,), daemon=True)
+        # TODO
+        # This is now deprecated
+        # t.setDaemon(True)
+        # but the test return errors.
         t.start()
 
         time.sleep(5)

@@ -6,3 +6,6 @@
 python_version >= '3.7'
 cached_property>=1.0
 unidecode>=0.4
+numpy >= 2.2.1
+numpy-base >= 2.2.1
+pandas >= 2.2.3

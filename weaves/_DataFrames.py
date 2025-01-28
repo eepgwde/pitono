@@ -21,6 +21,7 @@ from urllib.parse import urljoin, quote
 
 ## Assume that pandas has been loaded.
 import pandas as pd
+import numpy as np
 
 # singledispatchmethod is not available to Python 3.7
 from functools import singledispatch, update_wrapper
@@ -129,8 +130,9 @@ class _Impl(object):
         nulls = df.apply(lambda x: x.isnull().sum())
         missingP = df.isnull().sum()/obs
 
-        skewness = df.skew()
-        kurtosis = df.kurtosis()
+        
+        skewness = df.skew(skipna=True, numeric_only=True)
+        kurtosis = df.kurtosis(skipna=True, numeric_only=True)
 
         uniques = df.apply(lambda x: [x.unique()])
         uniques = uniques.transpose()
@@ -150,7 +152,13 @@ class _Impl(object):
 
         p0 = kwargs.get('predictor', None)
         if p0 is not None:
-            corr0 = df.corr()[p0]
+            df0 = df.select_dtypes(include=np.number)
+            # np.number is more general. Includes ints and floats.
+
+            # Remove Rows with NA Values 
+            df0.dropna(inplace=True) # Drops rows with at least one NaN value
+
+            corr0 = df0.corr()[p0]
             self.merge(corr0, name0='corr')
 
         return self.f0
