@@ -1,18 +1,8 @@
-2025-01-28  Walter Eaves  <weaves@lydia.host0>
-
-	* tests/test_Test3.py (Test3.test_03): deprecation: daemon is now a keyword. Not sure if test is still passed.
-
-	* tests/test_Test1.py (Test1): Added a common URL for the URL fetching tests.
-
-	* weaves/_DataFrames.py (_Impl.quality0): New keywords needed for skew() and kurtosis().
-
-	* weaves.cfg (fetcher-proxy): Changed this to the cluster default. This would need to be changed for another site.
-
-	* tests/test_Test4.py (Test4.test_15): This test is disabled for now.
-	(Test4.test_17): This test is also disabled.
-
 CHANGES
 =======
+
+* -
+* tested on lydia using conda local environment
 
 0.1.2
 -----

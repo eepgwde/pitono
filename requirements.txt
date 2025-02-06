@@ -3,9 +3,10 @@
 # process, which may cause wedges in the gate later.
 
 # This is problematic to compile, see if a binary distribution is available
-python_version >= '3.7'
-cached_property>=1.0
-unidecode>=0.4
-numpy >= 2.2.1
-numpy-base >= 2.2.1
+cached_property >= 1.0
+unidecode >= 0.4
+## in conda, pip install fails for these
+# numpy-base >= 2.2.1
+# numpy >= 2.2.1
+# numput doesn't work, but pandas needs numpy 
 pandas >= 2.2.3
